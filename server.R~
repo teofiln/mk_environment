@@ -8,6 +8,14 @@ tmp <- read.csv("./precipitation2013/Precipitation2008-2012.csv", header=TRUE)
 prec08 <- data.frame(tmp[,2:14])
 rownames(prec08) <- tmp[,1]
 
+tmp <- read.csv("./humidity2013/humidity2013.csv", header=TRUE)
+humid13 <- data.frame(tmp[,2:13])
+rownames(humid13) <- tmp[,1]
+
+tmp <- read.csv("./humidity2013/humidity2008-2012.csv", header=TRUE)
+humid08 <- data.frame(tmp[,2:13])
+rownames(humid08) <- tmp[,1]
+
 tmp <- read.csv("./precipitationType2013/precipitationRain2013.csv", header=TRUE)
 rain <- data.frame(tmp[,3:15])
 rownames(rain) <- tmp[,1]
@@ -31,6 +39,15 @@ precAmount <- reactive({
 	return(dataset)
 })
 
+# select dataset if choice is humidity
+humid <- reactive({
+	if (input$humid == "2013") {
+		dataset <- humid13 }
+	else {
+		dataset <- humid08 }
+	return(dataset)
+})
+
 # select dataset if choice is precipitation type
 precType <- reactive({
 	if (input$precType == "Rain") {
@@ -47,9 +64,12 @@ whichParameter <- reactive({
 	if (input$parameter == "Precipitation amount") {
 		dataset <- precAmount()
 		}
-	else { 
+	else if (input$parameter == "Precipitation type") { 
 		dataset <- precType()
 		}
+	else {
+		dataset <- humid()
+	}
 	return(dataset)
 })
 
@@ -77,6 +97,16 @@ precAmountTitle <- reactive({
 	return(Title)
 })
 
+# decide the title if precipitation amount
+humidityTitle <- reactive({
+	if (input$how == 1) {
+		Title <- paste("Humidity (%)", "|", input$humid,"|", input$city)
+		}
+	else {
+		Title <- paste("Humidity (%)", "|", input$humid,"|", input$month)
+		}	
+	return(Title)
+})
 
 # decide on the title if precipitation type
 precTypeTitle <- reactive({
@@ -96,8 +126,11 @@ whichTitle <- reactive({
 	if (input$parameter == "Precipitation amount") {
 		Title <- precAmountTitle()
 		}
-	else {
+	else if (input$parameter == "Precipitation type") {
 		Title <- precTypeTitle()
+	}
+	else {
+		Title <- humidityTitle()
 	}
 	return(Title)
 })
@@ -118,9 +151,10 @@ barchart <- function(x) {
 			
 	text(bp, y=x+5, format(x, T), cex=1, font=2)
 	}
+
 output$Plot <- renderPlot({
-	barchart(whichVector())
-})
+		barchart(whichVector())
+	})
 
 output$downloadPlot <- downloadHandler(
 	filename= reactive ({ paste(gsub("_"," ",whichTitle()),".pdf",sep="") }),
@@ -132,7 +166,6 @@ output$downloadPlot <- downloadHandler(
 	},
 	
 	contentType='application/pdf'
-
 )
 
 

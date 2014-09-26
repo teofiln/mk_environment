@@ -7,6 +7,14 @@ tmp <- read.csv("./precipitation2013/Precipitation2008-2012.csv", header=TRUE)
 prec08 <- data.frame(tmp[,2:14])
 rownames(prec08) <- tmp[,1]
 
+tmp <- read.csv("./humidity2013/humidity2013.csv", header=TRUE)
+humid13 <- data.frame(tmp[,2:13])
+rownames(humid13) <- tmp[,1]
+
+tmp <- read.csv("./humidity2013/humidity2008-2012.csv", header=TRUE)
+humid08 <- data.frame(tmp[,2:13])
+rownames(humid08) <- tmp[,1]
+
 tmp <- read.csv("./precipitationType2013/precipitationRain2013.csv", header=TRUE)
 rain <- data.frame(tmp[,3:15])
 rownames(rain) <- tmp[,1]
@@ -29,7 +37,8 @@ sidebarPanel(
 	selectInput("parameter", label = h6("Choose parameter", style="color:#0066FF"),
 					choices = list(
 						"Precipitation amount" = "Precipitation amount", 
-						"Precipitation type" = "Precipitation type"), 
+						"Precipitation type" = "Precipitation type",
+						"Humidity" = "Humidity"), 
 						selected = "Precipitation amount"),
 	br(),
 	# second level choice. Plot last year, previous four year average etc 
@@ -48,6 +57,14 @@ sidebarPanel(
 							"Snow" = "Snow",
 							"Fog" = "Fog"),
 							selected = "Rain")), 
+	
+	# second level choice. Plot rain, snow, fog 
+	conditionalPanel(condition= "input.parameter == 'Humidity'",
+		selectInput("precType", label = h6("Choose type", style="color:#0066FF"),
+						choices = list(
+							"2013" = "2013",
+							"2008-2012" = "2008-2012"),
+							selected = "2013")), 
 		br(),
 		# third level choice. Plot by city or by time period 
 		radioButtons("how", h6("Plot by:", style="color:#0066FF"), 
@@ -59,7 +76,7 @@ sidebarPanel(
 			# fourth level choice. Plot annual, monthly etc 
 			conditionalPanel(condition= "input.how == 2",
 				selectInput("month", label = h6("Choose month (or annual average)", style="color:#0066FF"),
-							colnames(prec13), selected = "Annual")),
+							colnames(prec13), selected = "Jan")),
 			# fourth level choice. Plot by city 
 			conditionalPanel(condition= "input.how == 1",
 				selectInput("city", label = h6("Choose city", style="color:#0066FF"),
