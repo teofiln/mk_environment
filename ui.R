@@ -76,7 +76,7 @@ sidebarPanel(
 			# fourth level choice. Plot annual, monthly etc 
 			conditionalPanel(condition= "input.how == 2",
 				selectInput("month", label = h6("Choose month (or annual average)", style="color:#0066FF"),
-							colnames(prec13), selected = "Jan")),
+								colnames(prec13), selected = "Jan")),
 			# fourth level choice. Plot by city 
 			conditionalPanel(condition= "input.how == 1",
 				selectInput("city", label = h6("Choose city", style="color:#0066FF"),

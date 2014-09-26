@@ -30,48 +30,6 @@ rownames(fog) <- tmp[,1]
 
 shinyServer(function(input, output, session) {
 
-# select dataset if choice is precipitation amount
-precAmount <- reactive({
-	if (input$year == "2013") {
-		dataset <- prec13 }
-	else {
-		dataset <- prec08 }
-	return(dataset)
-})
-
-# select dataset if choice is humidity
-humid <- reactive({
-	if (input$humid == "2013") {
-		dataset <- humid13 }
-	else {
-		dataset <- humid08 }
-	return(dataset)
-})
-
-# select dataset if choice is precipitation type
-precType <- reactive({
-	if (input$precType == "Rain") {
-		dataset <- rain }
-	else if (input$precType == "Snow") {
-		dataset <- snow }
-	else {
-		dataset <- fog }
-	return(dataset)
-})
-
-# sort which dataset to use (precipitation type or precipitation amount)
-whichParameter <- reactive({
-	if (input$parameter == "Precipitation amount") {
-		dataset <- precAmount()
-		}
-	else if (input$parameter == "Precipitation type") { 
-		dataset <- precType()
-		}
-	else {
-		dataset <- humid()
-	}
-	return(dataset)
-})
 
 # sort which column or row to plot (by city or by month)		
 whichVector <- reactive({

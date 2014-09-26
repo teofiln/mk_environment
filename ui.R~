@@ -58,9 +58,9 @@ sidebarPanel(
 							"Fog" = "Fog"),
 							selected = "Rain")), 
 	
-	# second level choice. Plot rain, snow, fog 
+	# second level choice. Plot last year, previous four year average etc 
 	conditionalPanel(condition= "input.parameter == 'Humidity'",
-		selectInput("precType", label = h6("Choose type", style="color:#0066FF"),
+		selectInput("humid", label = h6("Choose type", style="color:#0066FF"),
 						choices = list(
 							"2013" = "2013",
 							"2008-2012" = "2008-2012"),
@@ -76,11 +76,11 @@ sidebarPanel(
 			# fourth level choice. Plot annual, monthly etc 
 			conditionalPanel(condition= "input.how == 2",
 				selectInput("month", label = h6("Choose month (or annual average)", style="color:#0066FF"),
-							colnames(prec13), selected = "Jan")),
+								colnames(dataset), selected = "Jan")),
 			# fourth level choice. Plot by city 
 			conditionalPanel(condition= "input.how == 1",
 				selectInput("city", label = h6("Choose city", style="color:#0066FF"),
-								rownames(prec13), selected = "Skopje")),
+								rownames(dataset), selected = "Skopje")),
 	br(),	
 	downloadButton('downloadPlot', 'Download pdf')
 
