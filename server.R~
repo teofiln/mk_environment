@@ -9,15 +9,15 @@ prec08 <- data.frame(tmp[,2:14])
 rownames(prec08) <- tmp[,1]
 
 tmp <- read.csv("./precipitationType2013/precipitationRain2013.csv", header=TRUE)
-rain <- data.frame(tmp[,2:14])
+rain <- data.frame(tmp[,3:15])
 rownames(rain) <- tmp[,1]
 
 tmp <- read.csv("./precipitationType2013/precipitationSnow2013.csv", header=TRUE)
-snow <- data.frame(tmp[,2:14])
+snow <- data.frame(tmp[,3:15])
 rownames(snow) <- tmp[,1]
 
 tmp <- read.csv("./precipitationType2013/precipitationFog2013.csv", header=TRUE)
-fog <- data.frame(tmp[,2:14])
+fog <- data.frame(tmp[,3:15])
 rownames(fog) <- tmp[,1]
 
 shinyServer(function(input, output, session) {
@@ -69,10 +69,10 @@ whichVector <- reactive({
 # decide the title if precipitation amount
 precAmountTitle <- reactive({
 	if (input$how == 1) {
-		Title <- paste("Precipitation (mm)", input$year,"|", input$city)
+		Title <- paste("Precipitation (mm)", "|", input$year,"|", input$city)
 		}
 	else {
-		Title <- paste("Precipitation (mm)", input$year,"|", input$month)
+		Title <- paste("Precipitation (mm)", "|", input$year,"|", input$month)
 		}	
 	return(Title)
 })
@@ -81,13 +81,13 @@ precAmountTitle <- reactive({
 # decide on the title if precipitation type
 precTypeTitle <- reactive({
 	if (input$precType == "Rain") {
-		Title <- paste("Rainy days in", input$year,"in", input$city)
+		Title <- paste("Rain (days)","|", input$year,"|", input$city)
 		}
 	else if (input$precType == "Snow") {
-		Title <- paste("Snowy days in", input$year,"in", input$city)
+		Title <- paste("Snow (days)","|", input$year,"|", input$city)
 	}
 	else {
-		Title <- paste("Foggy days in", input$year,"in", input$city)
+		Title <- paste("Fog (days)","|", input$year,"|", input$city)
 		}
 	return(Title)
 })

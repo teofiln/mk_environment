@@ -8,15 +8,15 @@ prec08 <- data.frame(tmp[,2:14])
 rownames(prec08) <- tmp[,1]
 
 tmp <- read.csv("./precipitationType2013/precipitationRain2013.csv", header=TRUE)
-rain <- data.frame(tmp[,2:14])
+rain <- data.frame(tmp[,3:15])
 rownames(rain) <- tmp[,1]
 
 tmp <- read.csv("./precipitationType2013/precipitationSnow2013.csv", header=TRUE)
-snow <- data.frame(tmp[,2:14])
+snow <- data.frame(tmp[,3:15])
 rownames(snow) <- tmp[,1]
 
 tmp <- read.csv("./precipitationType2013/precipitationFog2013.csv", header=TRUE)
-fog <- data.frame(tmp[,2:14])
+fog <- data.frame(tmp[,3:15])
 rownames(fog) <- tmp[,1]
 
 shinyUI(fluidPage(theme= "yeti.css",
