@@ -1,0 +1,80 @@
+# read the tables
+tmp <- read.csv("./precipitation2013/Precipitation2013.csv", header=TRUE)
+prec13 <- data.frame(tmp[,2:14])
+rownames(prec13) <- tmp[,1]
+
+tmp <- read.csv("./precipitation2013/Precipitation2008-2012.csv", header=TRUE)
+prec08 <- data.frame(tmp[,2:14])
+rownames(prec08) <- tmp[,1]
+
+tmp <- read.csv("./precipitationType2013/precipitationRain2013.csv", header=TRUE)
+rain <- data.frame(tmp[,2:14])
+rownames(rain) <- tmp[,1]
+
+tmp <- read.csv("./precipitationType2013/precipitationSnow2013.csv", header=TRUE)
+snow <- data.frame(tmp[,2:14])
+rownames(snow) <- tmp[,1]
+
+tmp <- read.csv("./precipitationType2013/precipitationFog2013.csv", header=TRUE)
+fog <- data.frame(tmp[,2:14])
+rownames(fog) <- tmp[,1]
+
+shinyUI(fluidPage(theme= "yeti.css",
+
+titlePanel(h3("Environmental Statistics - Macedonia", style="color:red")),
+
+sidebarLayout(
+sidebarPanel(
+#	first level choice. What parameter to plot
+	selectInput("parameter", label = h6("Choose parameter", style="color:#0066FF"),
+					choices = list(
+						"Precipitation amount" = "Precipitation amount", 
+						"Precipitation type" = "Precipitation type"), 
+						selected = "Precipitation amount"),
+	br(),
+	# second level choice. Plot last year, previous four year average etc 
+	conditionalPanel(condition= "input.parameter == 'Precipitation amount'",
+		selectInput("year", label = h6("Choose year", style="color:#0066FF"),
+						choices = list(
+							"2013" = "2013",
+							"2008-2012" = "2008-2012"),
+							selected = "2013")),
+	
+	# second level choice. Plot rain, snow, fog 
+	conditionalPanel(condition= "input.parameter == 'Precipitation type'",
+		selectInput("precType", label = h6("Choose type", style="color:#0066FF"),
+						choices = list(
+							"Rain" = "Rain",
+							"Snow" = "Snow",
+							"Fog" = "Fog"),
+							selected = "Rain")), 
+		br(),
+		# third level choice. Plot by city or by time period 
+		radioButtons("how", h6("Plot by:", style="color:#0066FF"), 
+						choices=list(
+							"City throughout the year" = 1, 
+							"Monthly across cities" = 2), 
+						selected = 2),
+			br(),
+			# fourth level choice. Plot annual, monthly etc 
+			conditionalPanel(condition= "input.how == 2",
+				selectInput("month", label = h6("Choose month (or annual average)", style="color:#0066FF"),
+							colnames(prec13), selected = "Annual")),
+			# fourth level choice. Plot by city 
+			conditionalPanel(condition= "input.how == 1",
+				selectInput("city", label = h6("Choose city", style="color:#0066FF"),
+								rownames(prec13), selected = "Skopje")),
+	br(),	
+	downloadButton('downloadPlot', 'Download pdf')
+
+),
+
+mainPanel(
+	tabsetPanel(
+		tabPanel("Plot",
+			plotOutput("Plot")),
+		tabPanel("About", htmlOutput("textAbout"))
+		)
+	)
+)
+))
