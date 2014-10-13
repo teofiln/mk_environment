@@ -40,7 +40,7 @@ sidebarPanel(
 						"Precipitation type" = "Precipitation type",
 						"Humidity" = "Humidity"), 
 						selected = "Precipitation amount"),
-	br(),
+#	br(),
 	# second level choice. Plot last year, previous four year average etc 
 	conditionalPanel(condition= "input.parameter == 'Precipitation amount'",
 		selectInput("year", label = h6("Choose year", style="color:#0066FF"),
@@ -60,19 +60,19 @@ sidebarPanel(
 	
 	# second level choice. Plot last year, previous four year average etc 
 	conditionalPanel(condition= "input.parameter == 'Humidity'",
-		selectInput("humid", label = h6("Choose type", style="color:#0066FF"),
+		selectInput("humid", label = h6("Choose year", style="color:#0066FF"),
 						choices = list(
 							"2013" = "2013",
 							"2008-2012" = "2008-2012"),
 							selected = "2013")), 
-		br(),
+#		br(),
 		# third level choice. Plot by city or by time period 
 		radioButtons("how", h6("Plot by:", style="color:#0066FF"), 
 						choices=list(
 							"City throughout the year" = 1, 
 							"Monthly across cities" = 2), 
 						selected = 2),
-			br(),
+#			br(),
 			# fourth level choice. Plot annual, monthly etc 
 			conditionalPanel(condition= "input.how == 2",
 				selectInput("month", label = h6("Choose month (or annual average)", style="color:#0066FF"),
